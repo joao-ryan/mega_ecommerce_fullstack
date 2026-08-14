@@ -1,0 +1,65 @@
+# ==========================================
+# 1. Dependências (Nunca subir para o GitHub)
+# ==========================================
+node_modules/
+.pnpm-store/
+yarn.lock
+package-lock.json (opcional: remova esta linha se quiser travar versões do npm)
+
+# ==========================================
+# 2. Arquivos de Compilação / Build TypeScript
+# ==========================================
+dist/
+build/
+*.tsbuildinfo
+
+# ==========================================
+# 3. Variáveis de Ambiente & Chaves Secretas
+# ==========================================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ==========================================
+# 4. Uploads de Clientes & Mídia Local
+# ==========================================
+# Ignora arquivos enviados pelos usuários, mantendo a estrutura da pasta
+uploads/*
+!uploads/.gitkeep
+
+# ==========================================
+# 5. Relatórios de Testes & Cobertura (Vitest/Jest)
+# ==========================================
+coverage/
+.vitest/
+*.lcov
+
+# ==========================================
+# 6. Logs & Arquivos do Sistema Operacional / Editores
+# ==========================================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+
+# VS Code / Editores
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
