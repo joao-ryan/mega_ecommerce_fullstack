@@ -1,24 +1,25 @@
-import { AppError } from "../../../shared/errors/AppError.js";
 import {
   IProductsRepository,
   CreateProductDTO,
-  Product,
 } from "../repositories/IProductsRepository.js";
 
 export class CreateProductService {
   constructor(private productsRepository: IProductsRepository) {}
 
-  async execute(data: CreateProductDTO): Promise<Product> {
-    if (!data.name || !data.slug) {
-      throw new AppError("Nome e Slug do produto são obrigatórios.");
+  async execute(data: CreateProductDTO) {
+    const slug = data.slug || data.name.toLowerCase().replace(/\s+/g, "-");
+
+    const productAlreadyExists = await this.productsRepository.findBySlug(slug);
+
+    if (productAlreadyExists) {
+      throw new Error("Produto com este slug já cadastrado.");
     }
 
-    const productExists = await this.productsRepository.findBySlug(data.slug);
+    const product = await this.productsRepository.create({
+      ...data,
+      slug,
+    });
 
-    if (productExists) {
-      throw new AppError("Já existe um produto cadastrado com este slug.");
-    }
-
-    return await this.productsRepository.create(data);
+    return product;
   }
 }
