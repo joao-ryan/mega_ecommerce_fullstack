@@ -1,9 +1,11 @@
 import mysql from "mysql2/promise";
 
-// Se existir DATABASE_URL (Render/Aiven), usa a URI diretamente
-export const pool = process.env.DATABASE_URL
+// Lê explicitamente a DATABASE_URL do ambiente no Render
+const connectionString = process.env.DATABASE_URL;
+
+export const pool = connectionString
   ? mysql.createPool({
-      uri: process.env.DATABASE_URL,
+      uri: connectionString,
       ssl: {
         rejectUnauthorized: false,
       },
@@ -17,21 +19,7 @@ export const pool = process.env.DATABASE_URL
       password: process.env.DB_PASSWORD || "",
       database: process.env.DB_NAME || "ecommerce",
       port: Number(process.env.DB_PORT) || 3306,
-      ssl:
-        process.env.NODE_ENV === "production"
-          ? { rejectUnauthorized: false }
-          : undefined,
       waitForConnections: true,
       connectionLimit: 10,
       queueLimit: 0,
     });
-// Função rápida para testar a conexão na inicialização
-export async function testConnection() {
-  try {
-    const connection = await pool.getConnection();
-    console.log("✅ Conexão com o banco de dados MySQL realizada com sucesso!");
-    connection.release();
-  } catch (error) {
-    console.error("❌ Erro ao conectar no MySQL:", error);
-  }
-}
