@@ -1,13 +1,25 @@
 import mysql from "mysql2/promise";
+import dotenv from "dotenv";
 
-// Lê a URI de conexão (Aiven no Render) ou utiliza variáveis separadas
+// Garante a leitura imediata das variáveis de ambiente no Render
+dotenv.config();
+
 const connectionUri = process.env.DATABASE_URL;
+
+// Debug para validar no log do Render se a URI está sendo detectada
+if (connectionUri) {
+  console.log("🔗 DATABASE_URL detectada! Conectando ao banco remoto...");
+} else {
+  console.warn(
+    "⚠️ DATABASE_URL não encontrada! Usando configurações locais...",
+  );
+}
 
 export const pool = connectionUri
   ? mysql.createPool({
       uri: connectionUri,
       ssl: {
-        rejectUnauthorized: false, // Obrigatório para o Aiven
+        rejectUnauthorized: false,
       },
       waitForConnections: true,
       connectionLimit: 10,
@@ -24,7 +36,6 @@ export const pool = connectionUri
       queueLimit: 0,
     });
 
-// Exporta explicitamente a função testConnection
 export async function testConnection(): Promise<void> {
   try {
     const connection = await pool.getConnection();
