@@ -1,13 +1,13 @@
 import mysql from "mysql2/promise";
 
-// Lê explicitamente a DATABASE_URL do ambiente no Render
-const connectionString = process.env.DATABASE_URL;
+// Lê a URI de conexão (Aiven no Render) ou utiliza variáveis separadas
+const connectionUri = process.env.DATABASE_URL;
 
-export const pool = connectionString
+export const pool = connectionUri
   ? mysql.createPool({
-      uri: connectionString,
+      uri: connectionUri,
       ssl: {
-        rejectUnauthorized: false,
+        rejectUnauthorized: false, // Obrigatório para o Aiven
       },
       waitForConnections: true,
       connectionLimit: 10,
@@ -23,3 +23,14 @@ export const pool = connectionString
       connectionLimit: 10,
       queueLimit: 0,
     });
+
+// Exporta explicitamente a função testConnection
+export async function testConnection(): Promise<void> {
+  try {
+    const connection = await pool.getConnection();
+    console.log("✅ Conexão com o banco de dados realizada com sucesso!");
+    connection.release();
+  } catch (error) {
+    console.error("❌ Erro ao conectar no MySQL:", error);
+  }
+}
