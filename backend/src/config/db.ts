@@ -1,20 +1,18 @@
 import mysql from "mysql2/promise";
-import dotenv from "dotenv";
 
-dotenv.config();
-
-// Pool de conexões reaproveitável
 export const pool = mysql.createPool({
-  host: process.env.DB_HOST || "localhost",
-  port: Number(process.env.DB_PORT) || 3306,
-    user: process.env.DB_USER || "root",
-  password: process.env.DB_PASS || "",
-  database: process.env.DB_NAME || "mega_ecommerce",
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  port: Number(process.env.DB_PORT),
+  ssl: {
+    rejectUnauthorized: false, // Obrigatório para conexões SSL com Aiven no Render
+  },
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
 });
-
 
 // Função rápida para testar a conexão na inicialização
 export async function testConnection() {
