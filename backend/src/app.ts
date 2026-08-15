@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import path from "path";
 import morgan from "morgan";
 
-import authRoutes from "./routes/authRoute.js";
+import authRoutes from "./routes/authRoutes.js";
 import productsRouter from "./modules/products/products.routes.js";
 import variantsRouter from "./modules/products/submodules/variants/variants.routes.js";
 import imagesRouter from "./modules/products/submodules/images/images.routes.js";

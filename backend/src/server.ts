@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-dotenv.config(); // <--- Mova para cá! Precisa rodar antes de qualquer import do projeto!
+dotenv.config();
 
 import express from "express";
 import cors from "cors";
@@ -8,7 +8,7 @@ import morgan from "morgan";
 import { testConnection } from "./config/db.js";
 import { initTables } from "./config/initDb.js";
 
-import authRoutes from "./routes/authRoute.js";
+import userRoutes from "./routes/userRoutes.js"; // Sincronização do Clerk
 import productsRouter from "./modules/products/products.routes.js";
 import { errorHandler } from "./shared/middlewares/errorHandler.js";
 
@@ -26,21 +26,26 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
 
-// Rotas da API
-app.use("/api/auth", authRoutes);
-app.use("/api/products", productsRouter);
-
-app.get("/health", (req, res) => {
-  res.json({ status: "ok", message: "API rodando em Arquitetura Sênior!" });
-});
+// Rota para Sincronização do Clerk (Substitui ou complementa o auth anterior)
+app.use("/api/users", userRoutes);
 
 // Rotas do Módulo
+app.use("/api/products", productsRouter);
 app.use("/api/variants", variantsRouter);
 app.use("/api/products/images", imagesRouter);
 app.use("/api/cart", cartRouter);
 app.use("/api/orders", ordersRouter);
 app.use("/api/payments", paymentsRouter);
 
+// Health Check
+app.get("/health", (req, res) => {
+  res.json({
+    status: "ok",
+    message: "API E-commerce rodando em Arquitetura Sênior!",
+  });
+});
+
+// Middleware Global de Tratamento de Erros
 app.use(errorHandler);
 
 app.listen(PORT, async () => {
