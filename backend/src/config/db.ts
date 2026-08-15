@@ -10,9 +10,16 @@ console.log(
   connectionUri ? "DATABASE_URL Encontrada" : "DATABASE_URL Ausente",
 );
 
-// Passa a URI diretamente como parâmetro principal do Pool
 export const pool = connectionUri
-  ? mysql.createPool(connectionUri)
+  ? mysql.createPool({
+      uri: connectionUri,
+      ssl: {
+        rejectUnauthorized: false,
+      },
+      waitForConnections: true,
+      connectionLimit: 10,
+      queueLimit: 0,
+    })
   : mysql.createPool({
       host: process.env.DB_HOST || "localhost",
       user: process.env.DB_USER || "root",
