@@ -1,5 +1,5 @@
 # ╔═══════════════════════════════════════════════════════════════════════════════════════════════╗
-# ║   ⚡ GUIA TÉCNICO COMPLETO DA STACK FULL-STACK — JOÃO RYAN                                  ║
+# ║   ⚡ GUIA TÉCNICO COMPLETO DO E-Commerce FULL STACK                                  ║
 # ║   Documentação de Engenharia, Padrões Arquiteturais e Resiliência Enterprise                ║
 # ╚═══════════════════════════════════════════════════════════════════════════════════════════════╝
 
@@ -115,6 +115,6 @@ A camada de apresentação foi construída com foco em interfaces imersivas de p
 
 <div align="center">
 
-**⚡ Documentação mantida e padronizada por João Ryan — Senior Full-Stack Engineer**
+**⚡ Documentação mantida e padronizada por Joao Ryan - Front-end Junior**
 
 </div>
