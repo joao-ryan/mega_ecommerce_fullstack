@@ -18,13 +18,19 @@ dotenv.config();
 
 const app = express();
 
+// Configuração Permissiva e Segura de CORS
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:5173", // porta padrão do Vite
+    origin: "*", // Permite chamadas do React na Vercel/Netlify/Localhost
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
     credentials: true,
   }),
 );
-app.use(express.json());
+
+// Expansão do limite de payload para suportar imagens e arrays de checkout
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(morgan("dev"));
 
 // Uploads
@@ -44,7 +50,8 @@ app.get("/health", (req, res) => {
   res.json({ status: "ok", message: "API E-Commerce Ativa!" });
 });
 
-// Middleware Global de Tratamento de Erros
+// Middleware Global de Tratamento de Erros (Evita crash do processo Node)
 app.use(errorHandler);
 
 export { app };
+
